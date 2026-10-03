@@ -5,6 +5,7 @@ public class FollowWP : MonoBehaviour
     public GameObject[] waypoints;
     int currentWP = 0;
     public float speed = 10.0f;
+    public float rotSpeed = 5.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,7 +25,11 @@ public class FollowWP : MonoBehaviour
             }
         }
 
-        this.transform.LookAt(waypoints[currentWP].transform);
+        //this.transform.LookAt(waypoints[currentWP].transform);
+
+        Quaternion lookAtWP = Quaternion.LookRotation(waypoints[currentWP].transform.position - this.transform.position);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookAtWP, rotSpeed * Time.deltaTime);
+
         this.transform.Translate(0, 0, speed * Time.deltaTime);
     }
 }
